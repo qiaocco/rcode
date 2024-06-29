@@ -57,9 +57,9 @@ def next_open_socket(socks: Sequence[Path]) -> Path:
             + "VS Code remote SSH session before using this tool.",
         )
 
-
+REMOTE_DIR = ".vscode-server/cli/servers/*/*"
 def is_remote_vscode() -> bool:
-    code_repos = Path.home().glob(".vscode-server/bin/*")
+    code_repos = Path.home().glob(REMOTE_DIR)
     return len(list(code_repos)) > 0 and os.getenv("SSH_CLIENT")
 
 
@@ -71,7 +71,7 @@ def get_code_binary() -> Path:
 
     # Every entry in ~/.vscode-server/bin corresponds to a commit id
     # Pick the most recent one
-    code_repos = sort_by_access_timestamp(Path.home().glob(".vscode-server/bin/*"))
+    code_repos = sort_by_access_timestamp(Path.home().glob(REMOTE_DIR))
     if len(code_repos) == 0:
         fail(
             "No installation of VS Code Server detected!",
